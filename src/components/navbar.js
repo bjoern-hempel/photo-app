@@ -8,9 +8,13 @@ export default class Navbar extends React.Component {
             <nav className="navbar">
                 <div className="navbar-buttons">
                     <Link to="/photo/new" className="btn">New Photo</Link>
+                    <Link to="/album/new" className="btn">New Album</Link>
                 </div>
             
-                <h1><Link to="/"><img src={logo} alt="Test" width="50" height="50" />Homepage</Link></h1>
+                <Link to="/">Photo Stream</Link> &nbsp;
+                <Link to="/album">Album</Link>
+
+                <div style={{clear: 'both'}}></div>
             </nav>
         );
     }
