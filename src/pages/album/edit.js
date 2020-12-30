@@ -12,7 +12,7 @@ export default class EditAlbumPage extends React.Component {
         updatedAt: (new Date()).toISOString(),
 
         title: '',
-        body: '',
+        description: '',
     }
 
     state = {
@@ -79,8 +79,8 @@ export default class EditAlbumPage extends React.Component {
                         <input type="text" name="title" value={album.title} onChange={this.updateValue} />
                     </div>
                     <div className="album-form-field photo-form-field-text">
-                        <label>Body</label>
-                        <textarea name="body" value={album.body} onChange={this.updateValue} />
+                        <label>Description</label>
+                        <textarea name="description" value={album.description} onChange={this.updateValue} />
                     </div>
                     <hr />
                     <div className="album-form-buttons">

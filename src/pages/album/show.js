@@ -19,7 +19,7 @@ export default class ShowAlbumPage extends React.Component {
                 <div><small><strong>Created At</strong>: { formatDate(album.createdAt) }</small></div>
                 <div><small><strong>ID</strong>: { album._id }</small></div>
                 <h1>{ album.title }</h1>
-                <div>{ album.body }</div>
+                <div>{ album.description }</div>
             </div>
         );
     }

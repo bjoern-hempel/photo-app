@@ -19,7 +19,7 @@ export default class ShowPhotoPage extends React.Component {
                 <div><small><strong>Created At</strong>: { formatDate(photo.createdAt) }</small></div>
                 <div><small><strong>ID</strong>: { photo._id }</small></div>
                 <h1>{ photo.title }</h1>
-                <div>{ photo.body }</div>
+                <div>{ photo.description }</div>
                 <div><img src={photo.paths.localDirect} width="750" /></div>
             </div>
         );
