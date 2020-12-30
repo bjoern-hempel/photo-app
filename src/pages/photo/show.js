@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
+
 import { formatDate } from '../../utils/date';
 
 export default class ShowPhotoPage extends React.Component {
@@ -15,6 +17,7 @@ export default class ShowPhotoPage extends React.Component {
 
         return (
             <div>
+                <div><Link to="/">Back</Link>, <Link to={`/photo/edit/${photo._id}`}>Edit</Link></div>
                 <div><small><strong>Updated At</strong>: { formatDate(photo.updatedAt) }</small></div>
                 <div><small><strong>Created At</strong>: { formatDate(photo.createdAt) }</small></div>
                 <div><small><strong>ID</strong>: { photo._id }</small></div>

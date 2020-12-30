@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import DesignMoleculeAlbumSelect from '../../design/molecule/album/select';
+
 import { formatDate } from '../../utils/date';
 
 /**
@@ -17,6 +19,8 @@ export default class EditPhotoPage extends React.Component {
             remote: 'remote://images/DSC07434.JPG'
         },
 
+        albums: [],
+
         title: '',
         description: '',
     }
@@ -25,11 +29,23 @@ export default class EditPhotoPage extends React.Component {
         photo: this.props.photo ? this.props.photo : this.newPhoto
     }
 
-    updateValue = (e) => {
+    getValue = (e) => {
+        const targetTagName = e.target.tagName;
+
+        switch (targetTagName) {
+            case 'SELECT':
+                return Array.from(e.target.selectedOptions, option => option.value);
+
+            default:
+                return e.target.value;
+        }
+    }
+
+    handleChange = (e) => {
         const { photo } = this.state;
 
         const targetNames = e.target.name.split('.');
-        const targetValue = e.target.value;
+        const targetValue = this.getValue(e);
 
         switch (targetNames.length) {
             case 1:
@@ -49,12 +65,14 @@ export default class EditPhotoPage extends React.Component {
                 break;
         }
 
-        photo['paths']['localPhotoApp'] = '/photo-app%s'.replace(/%s/, photo['paths']['localDirect']);
-        photo['paths']['remote'] = 'remote:/%s'.replace(/%s/, photo['paths']['localDirect']);
+        if (targetValue === 'localDirect') {
+            photo['paths']['localPhotoApp'] = '/photo-app%s'.replace(/%s/, photo['paths']['localDirect']);
+            photo['paths']['remote'] = 'remote:/%s'.replace(/%s/, photo['paths']['localDirect']);
+        }
 
         this.setState({
             photo: { ...photo }
-        })
+        });
     }
 
     handleSave = async (e) => {
@@ -85,16 +103,20 @@ export default class EditPhotoPage extends React.Component {
                     <hr />
                     <div className="photo-form-field">
                         <label>Path</label>
-                        <input type="text" name="paths.localDirect" value={photo.paths.localDirect} onChange={this.updateValue} />
+                        <input type="text" name="paths.localDirect" value={photo.paths.localDirect} onChange={this.handleChange} />
+                    </div>
+                    <hr />
+                    <div className="photo-form-field">
+                        <DesignMoleculeAlbumSelect {...this.props} onChange={this.handleChange} />
                     </div>
                     <hr />
                     <div className="photo-form-field">
                         <label>Title</label>
-                        <input type="text" name="title" value={photo.title} onChange={this.updateValue} />
+                        <input type="text" name="title" value={photo.title} onChange={this.handleChange} />
                     </div>
                     <div className="photo-form-field photo-form-field-text">
                         <label>Description</label>
-                        <textarea name="description" value={photo.description} onChange={this.updateValue} />
+                        <textarea name="description" value={photo.description} onChange={this.handleChange} />
                     </div>
                     <hr />
                     <div className="photo-form-buttons">

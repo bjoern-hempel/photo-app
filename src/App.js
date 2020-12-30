@@ -79,8 +79,8 @@ class App extends Component {
                 <Route exact path="/photo" component={(props) => <ListPhotoPage {...props} photos={this.state.photos} />} />
                 <Route exact path="/photo/list" component={(props) => <ListPhotoPage {...props} photos={this.state.photos} />} />
                 <Route exact path="/photo/show/:id" component={(props) => <ShowPhotoPage {...props} photo={this.state.photos[props.match.params.id]} />}  />
-                <Route exact path="/photo/edit/:id" component={(props) => <EditPhotoPage {...props} photo={this.state.photos[props.match.params.id]} onSave={this.handlePhotoSave} />}  />
-                <Route exact path="/photo/new" component={(props) => <EditPhotoPage {...props} photo={undefined} onSave={this.handlePhotoSave} />} />
+                <Route exact path="/photo/edit/:id" component={(props) => <EditPhotoPage {...props} photo={this.state.photos[props.match.params.id]} albums={this.state.albums} onSave={this.handlePhotoSave} />}  />
+                <Route exact path="/photo/new" component={(props) => <EditPhotoPage {...props} photo={undefined} albums={this.state.albums} onSave={this.handlePhotoSave} />} />
 
                 {/* Albums: index/list, show/detail, new */}
                 <Route exact path="/album" component={(props) => <ListAlbumPage {...props} albums={this.state.albums} />} />
