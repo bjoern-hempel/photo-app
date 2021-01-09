@@ -79,6 +79,8 @@ export default class EditPhotoPage extends React.Component {
         e.preventDefault();
 
         const id = await this.props.onSave(this.state.photo);
+
+        console.log(this.props);
         this.props.history.replace(`/photo/show/${id}`);
     }
 
@@ -107,7 +109,7 @@ export default class EditPhotoPage extends React.Component {
                     </div>
                     <hr />
                     <div className="photo-form-field">
-                        <DesignMoleculeAlbumSelect {...this.props} onChange={this.handleChange} />
+                        <DesignMoleculeAlbumSelect {...this.props} photo={photo} onChange={this.handleChange} />
                     </div>
                     <hr />
                     <div className="photo-form-field">
