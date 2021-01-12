@@ -65,7 +65,7 @@ export default class DB {
      * @param {string} id
      */
     async get(id) {
-        let doc = await db.get(id);
+        let doc = await this.db.get(id);
 
         return doc;
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 
@@ -13,8 +13,40 @@ import ListAlbumPage from './pages/album/list';
 import ShowAlbumPage from './pages/album/show';
 import EditAlbumPage from './pages/album/edit';
 
+import Module from './pages/module/index';
+
 import DB from './db';
 
+import { createMuiTheme, ThemeProvider, withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+
+/**
+ * Create default mui theme.
+ *
+ * @see https://material.io/design/color/the-color-system.html
+ */
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            light: '#4dabf5',
+            main: '#2196f3',
+            dark: '#1769aa',
+            contrastText: '##ffffff',
+        },
+        secondary: {
+            light: '#ffcf33',
+            main: '#ffc400',
+            dark: '#b28900',
+            contrastText: '#000',
+        },
+    },
+});
+
+/**
+ * React Component
+ *
+ * @see https://reactjs.org/docs/react-component.html
+ */
 class App extends Component {
     state = {
         dbLocal: new DB('photoapp'),
@@ -23,8 +55,20 @@ class App extends Component {
         photos: {},
         album_to_photo: {},
         photo_to_album: {},
-        loading: true
+        loading: true,
+        title: 'Photo App - Home'
     }
+
+    /**
+     * Title changer function.
+     *
+     * @param {string} newTitle
+     */
+    changeTitle = (newTitle) => {
+        this.setState({
+            title: newTitle
+        })
+     }
 
     /**
      * Exectute if app is started.
@@ -299,6 +343,8 @@ class App extends Component {
             return <h2>Loading...</h2>
         }
 
+        let appProps = this.props;
+
         return (
             <div className="app-content">
                 {/* Photos: index/list, show/detail, new  */}
@@ -315,18 +361,25 @@ class App extends Component {
                 <Route exact path="/album/show/:id" component={(props) => <ShowAlbumPage {...props} album={this.state.albums[props.match.params.id]} />}  />
                 <Route exact path="/album/edit/:id" component={(props) => <EditAlbumPage {...props} album={this.state.albums[props.match.params.id]} onSave={this.handleAlbumSave} />}  />
                 <Route exact path="/album/new" component={(props) => <EditAlbumPage {...props} album={undefined} onSave={this.handleAlbumSave} />} />
+
+                {/* Module */}
+                <Route exact path="/module" component={(props) => <Module {...props} {...appProps} />} />
             </div>
         );
     }
 
     render() {
+        let { classes } = this.props;
+
         return (
-            <BrowserRouter>
-                <div className="App">
-                    <Navbar />
-                    { this.renderContent() }
-                </div>
-            </BrowserRouter>
+            <ThemeProvider theme={theme}>
+                <BrowserRouter>
+                    <div className="App">
+                        <Navbar classes={classes} />
+                        { this.renderContent() }
+                    </div>
+                </BrowserRouter>
+            </ThemeProvider>
         );
     }
 }
