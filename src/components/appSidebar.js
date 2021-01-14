@@ -1,26 +1,21 @@
+// import default components
 import React from 'react';
-
+import { Route, Switch } from 'react-router-dom';
 import PropTypes from "prop-types";
 import classNames from "classnames";
+
+// material ui core
 import { withStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import { Drawer, AppBar, Toolbar, Typography, Divider, IconButton, ListItemIcon, ListItemText, ListItem, Menu, MenuItem } from "@material-ui/core";
+
+// import icons (rename to XxxIcon)
+import AccountIcon from "@material-ui/icons/AccountCircle";
+import MenuIconOpen from "@material-ui/icons/MenuOpen";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 
-import { Link, Route, Switch } from 'react-router-dom';
+// import own components
+import LinkButton from '../design/atom/linkButton';
 
 const drawerWidth = 220;
 
@@ -40,7 +35,7 @@ const styles = theme => ({
         marginLeft: 12,
         marginRight: 36
     },
-    menuButtonIconClosed: {
+    menuButtonIconClose: {
         transition: theme.transitions.create(["transform"], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
@@ -95,7 +90,7 @@ const styles = theme => ({
 
 class AppSidebar extends React.Component {
     state = {
-        open: false,
+        open: true,
         anchorEl: null
     };
 
@@ -118,9 +113,18 @@ class AppSidebar extends React.Component {
      * The Appbar render method.
      */
     render() {
-        const { classes, theme } = this.props;
+        const { classes } = this.props;
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
+
+        const menuMain = [
+            {href: '/photo', text: 'Foto Stream', icon: <MailIcon />},
+            {href: '/album', text: 'Foto Alben', icon: <MailIcon />}
+        ];
+
+        const menuSecond = [
+            {href: '/module', text: 'Modulübersicht', icon: <InboxIcon />}
+        ];
 
         return (
             <React.Fragment>
@@ -138,13 +142,8 @@ class AppSidebar extends React.Component {
                         onClick={this.handleDrawerOpen}
                         className={classes.menuButton}
                     >
-                        <MenuIcon classes={{
-                            root: this.state.open
-                            ? classes.menuButtonIconOpen
-                            : classes.menuButtonIconClosed
-                        }} />
+                        {this.state.open ? <MenuIconOpen classes={{root: classes.menuButtonIconClose}} /> : <MenuIconOpen classes={{root: classes.menuButtonIconOpen}} />}
                     </IconButton>
-
 
                     <Typography
                         variant="h6"
@@ -152,23 +151,25 @@ class AppSidebar extends React.Component {
                         className={classes.grow}
                         noWrap
                     >
-                        Photo App -&nbsp;
                         {/* @see https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/Switch.md */}
                         <Switch>
-                            <Route exact path="/">Photo Stream</Route>
-                            <Route path="/photo">Photo Stream</Route>
-                            <Route path="/album">Album</Route>
-                            <Route path="/module">Module Overview</Route>
+                            <Route exact path="/">Foto App - Foto Stream</Route>
+                            <Route path="/photo">Foto App - Foto Stream</Route>
+                            <Route path="/album">Foto App - Foto Alben</Route>
+                            <Route path="/module">Foto App - Modul Übersicht</Route>
                         </Switch>
                     </Typography>
                     <div>
+                        <LinkButton to="/photo/new">(+)</LinkButton>
+                        <LinkButton to="/album/new">(+)</LinkButton>
+
                         <IconButton
                             aria-owns={open ? "menu-appbar" : undefined}
                             aria-haspopup="true"
                             onClick={this.handleMenu}
                             color="inherit"
-                            >
-                            <AccountCircle />
+                        >
+                            <AccountIcon />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -205,27 +206,22 @@ class AppSidebar extends React.Component {
                     open={this.state.open}
                 >
                     <div className={classes.toolbar} />
-                    <List>
-                    {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
+
+                    {menuMain.map((link, index) => (
+                        <ListItem button key={link.text} component="a" href={link.href}>
+                            <ListItemIcon>{link.icon}</ListItemIcon>
+                            <ListItemText primary={link.text} />
                         </ListItem>
                     ))}
-                    </List>
+
                     <Divider />
-                    <List>
-                    {["All mail", "Trash", "Spam"].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
+
+                    {menuSecond.map((link, index) => (
+                        <ListItem button key={link.text} component="a" href={link.href}>
+                            <ListItemIcon>{link.icon}</ListItemIcon>
+                            <ListItemText primary={link.text} />
                         </ListItem>
                     ))}
-                    </List>
                 </Drawer>
             </React.Fragment>
         );
