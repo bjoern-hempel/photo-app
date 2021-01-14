@@ -20,6 +20,8 @@ import MailIcon from "@material-ui/icons/Mail";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 
+import { Link, Route, Switch } from 'react-router-dom';
+
 const drawerWidth = 220;
 
 const styles = theme => ({
@@ -142,13 +144,22 @@ class AppSidebar extends React.Component {
                             : classes.menuButtonIconClosed
                         }} />
                     </IconButton>
+
+
                     <Typography
                         variant="h6"
                         color="inherit"
                         className={classes.grow}
                         noWrap
                     >
-                        Photo App
+                        Photo App -&nbsp;
+                        {/* @see https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/Switch.md */}
+                        <Switch>
+                            <Route exact path="/">Photo Stream</Route>
+                            <Route path="/photo">Photo Stream</Route>
+                            <Route path="/album">Album</Route>
+                            <Route path="/module">Module Overview</Route>
+                        </Switch>
                     </Typography>
                     <div>
                         <IconButton
