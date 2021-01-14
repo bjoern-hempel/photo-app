@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './App.css';
+import AppSidebar from './components/appSidebar';
+import PropTypes from "prop-types";
+
+import { createMuiTheme, ThemeProvider, withStyles } from '@material-ui/core/styles';
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Typography from "@material-ui/core/Typography";
 
 import Navbar from './components/navbar';
 
@@ -16,9 +22,6 @@ import EditAlbumPage from './pages/album/edit';
 import Module from './pages/module/index';
 
 import DB from './db';
-
-import { createMuiTheme, ThemeProvider, withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 
 /**
  * Create default mui theme.
@@ -43,6 +46,29 @@ const theme = createMuiTheme({
 });
 
 /**
+ * Define some styles
+ *
+ * @param {*} theme
+ */
+const styles = theme => ({
+    root: {
+        display: "flex"
+    },
+    toolbar: {
+        display: "flex",
+        alignItems: "center",
+        marginTop: theme.spacing.unit,
+        justifyContent: "flex-end",
+        padding: "0 8px",
+        ...theme.mixins.toolbar
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing.unit * 3
+    }
+});
+
+/**
  * React Component
  *
  * @see https://reactjs.org/docs/react-component.html
@@ -56,8 +82,10 @@ class App extends Component {
         album_to_photo: {},
         photo_to_album: {},
         loading: true,
-        title: 'Photo App - Home'
-    }
+        title: 'Photo App - Home',
+        open: false,
+        anchorEl: null
+    };
 
     /**
      * Title changer function.
@@ -347,6 +375,9 @@ class App extends Component {
 
         return (
             <div className="app-content">
+                {/* A collection of HTML element and attribute style-normalizations */}
+                <CssBaseline />
+
                 {/* Photos: index/list, show/detail, new  */}
                 <Route exact path="/" component={(props) => <ListPhotoPage {...props} photos={this.state.photos} onDelete={this.handlePhotoDelete} />} />
                 <Route exact path="/photo" component={(props) => <ListPhotoPage {...props} photos={this.state.photos} onDelete={this.handlePhotoDelete} />} />
@@ -369,19 +400,32 @@ class App extends Component {
     }
 
     render() {
-        let { classes } = this.props;
+        const { classes } = this.props;
+        const { anchorEl } = this.state;
+        const open = Boolean(anchorEl);
 
         return (
+
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
-                    <div className="App">
-                        <Navbar classes={classes} />
-                        { this.renderContent() }
-                    </div>
+                    <div className={classes.root}>
+                        <CssBaseline />
+                            <AppSidebar />
+
+                            <main className={classes.content}>
+                                <div className={classes.toolbar} />
+                                { this.renderContent() }
+                            </main>
+                        </div>
                 </BrowserRouter>
             </ThemeProvider>
         );
     }
 }
 
-export default App;
+App.propTypes = {
+    classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired
+};
+
+export default withStyles(styles, { withTheme: true })(App);
