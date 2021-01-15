@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 import './App.css';
 import AppSidebar from './components/appSidebar';
 import PropTypes from "prop-types";
 
-import { createMuiTheme, ThemeProvider, withStyles } from '@material-ui/core/styles';
+import { ThemeProvider, withStyles } from '@material-ui/core/styles';
+import { unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core';
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
-
-import Navbar from './components/navbar';
 
 import ListPhotoPage from './pages/photo/list';
 import ShowPhotoPage from './pages/photo/show';
@@ -57,14 +55,14 @@ const styles = theme => ({
     toolbar: {
         display: "flex",
         alignItems: "center",
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing(1),
         justifyContent: "flex-end",
         padding: "0 8px",
         ...theme.mixins.toolbar
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3
+        padding: theme.spacing(3)
     }
 });
 
@@ -311,7 +309,7 @@ class App extends Component {
         }
 
         let id = res.id;
-        let rev = res.rev;
+        //let rev = res.rev;
 
         const photos = this.state.photos;
         delete photos[id];
@@ -354,7 +352,7 @@ class App extends Component {
         }
 
         let id = res.id;
-        let rev = res.rev;
+        //let rev = res.rev;
 
         const albums = this.state.albums;
         delete albums[id];
@@ -401,11 +399,8 @@ class App extends Component {
 
     render() {
         const { classes } = this.props;
-        const { anchorEl } = this.state;
-        const open = Boolean(anchorEl);
 
         return (
-
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
                     <div className={classes.root}>

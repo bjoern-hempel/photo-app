@@ -6,18 +6,41 @@ import classNames from "classnames";
 
 // material ui core
 import { withStyles } from "@material-ui/core/styles";
-import { Drawer, AppBar, Toolbar, Typography, Divider, IconButton, ListItemIcon, ListItemText, ListItem, Menu, MenuItem } from "@material-ui/core";
+import { Drawer, AppBar, Toolbar, Typography, Divider, IconButton, List, ListItemIcon, ListItemText, ListItem, Menu,
+    MenuItem, Collapse } from "@material-ui/core";
 
 // import icons (rename to XxxIcon)
-import AccountIcon from "@material-ui/icons/AccountCircle";
-import MenuIconOpen from "@material-ui/icons/MenuOpen";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
+import MenuOpenTwoToneIcon from '@material-ui/icons/MenuOpenTwoTone';
+import PhotoAlbumTwoToneIcon from '@material-ui/icons/PhotoAlbumTwoTone';
+import PhotoLibraryTwoToneIcon from '@material-ui/icons/PhotoLibraryTwoTone';
+import ViewModuleTwoToneIcon from '@material-ui/icons/ViewModuleTwoTone';
+import InfoTwoToneIcon from '@material-ui/icons/InfoTwoTone';
+import ImportContactsTwoToneIcon from '@material-ui/icons/ImportContactsTwoTone';
+import AddPhotoAlternateTwoToneIcon from '@material-ui/icons/AddPhotoAlternateTwoTone';
+import PlaylistAddTwoToneIcon from '@material-ui/icons/PlaylistAddTwoTone';
+import ExpandLessTwoToneIcon from '@material-ui/icons/ExpandLessTwoTone';
+import ExpandMoreTwoToneIcon from '@material-ui/icons/ExpandMoreTwoTone';
 
 // import own components
 import LinkButton from '../design/atom/linkButton';
 
 const drawerWidth = 220;
+
+const menuMain = [
+    {submenu: [
+        {href: '/photo', text: 'Foto Stream', subtext: '4 Bilder', icon: <PhotoLibraryTwoToneIcon />},
+        {href: '/photo/ignored', text: 'Foto Stream', subtext: '4 Bilder', icon: <PhotoLibraryTwoToneIcon />},
+        {href: '/photo/new', text: 'Foto Stream', subtext: '4 Bilder', icon: <PhotoLibraryTwoToneIcon />},
+    ], href: '/photo', text: 'Foto Stream', subtext: '4 Bilder', icon: <PhotoLibraryTwoToneIcon />},
+    {href: '/album', text: 'Foto Alben', subtext: '3 Alben', icon: <PhotoAlbumTwoToneIcon />}
+];
+
+const menuSecond = [
+    {href: '/module', text: 'Modulübersicht', icon: <ViewModuleTwoToneIcon />},
+    {href: '/info', text: 'Info', icon: <InfoTwoToneIcon />},
+    {href: '/help', text: 'Hilfe', icon: <ImportContactsTwoToneIcon />}
+];
 
 const styles = theme => ({
     appBar: {
@@ -57,56 +80,68 @@ const styles = theme => ({
         flexShrink: 0,
         whiteSpace: "nowrap"
     },
-    drawerOpen: {
+    sidebarOpen: {
         width: drawerWidth,
         transition: theme.transitions.create("width", {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen
         })
     },
-    drawerClose: {
+    sidebarClose: {
         transition: theme.transitions.create("width", {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
         }),
         overflowX: "hidden",
-        width: theme.spacing.unit * 7 + 1,
+        width: theme.spacing(7) + 1,
         [theme.breakpoints.up("sm")]: {
-            width: theme.spacing.unit * 9 + 1
+            width: theme.spacing(9) + 1
         }
     },
     toolbar: {
         display: "flex",
         alignItems: "center",
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing(1),
         justifyContent: "flex-end",
         padding: "0 8px",
         ...theme.mixins.toolbar
     },
     grow: {
         flexGrow: 1
+    },
+    nested: {
+        paddingLeft: theme.spacing(4),
     }
 });
 
 class AppSidebar extends React.Component {
     state = {
-        open: true,
-        anchorEl: null
+        sidebarOpen: true,
+
+        topMenuOpen: false,
+
+        photoOpen: true,
+        albumOpen: true
     };
 
-    handleDrawerOpen = () => {
-        this.setState({ open: !this.state.open });
+    topMenuAnchorElement = null;
+
+    handleSidebar = () => {
+        this.setState({ sidebarOpen: !this.state.sidebarOpen });
     };
 
-    handleDrawerClose = () => {
-        this.setState({ open: false });
+    handleAlbumClick = () => {
+        this.setState({albumOpen: !this.state.albumOpen});
     };
 
-    handleMenu = event => {
-        this.setState({ anchorEl: event.currentTarget });
+    openAppbarMenu = (event) => {
+        this.topMenuAnchorElement = event.currentTarget;
+        this.setState({ topMenuOpen: true });
     };
-    handleClose = () => {
-        this.setState({ anchorEl: null });
+
+    closeAppbarMenu = () => {
+        this.topMenuAnchorElement = null;
+        this.setState({ topMenuOpen: false });
     };
 
     /**
@@ -114,35 +149,21 @@ class AppSidebar extends React.Component {
      */
     render() {
         const { classes } = this.props;
-        const { anchorEl } = this.state;
-        const open = Boolean(anchorEl);
-
-        const menuMain = [
-            {href: '/photo', text: 'Foto Stream', icon: <MailIcon />},
-            {href: '/album', text: 'Foto Alben', icon: <MailIcon />}
-        ];
-
-        const menuSecond = [
-            {href: '/module', text: 'Modulübersicht', icon: <InboxIcon />}
-        ];
 
         return (
             <React.Fragment>
                 <AppBar
                     position="fixed"
                     className={classes.appBar}
-                    fooJon={classNames(classes.appBar, {
-                        [classes.appBarShift]: this.state.open
-                    })}
                 >
                     <Toolbar disableGutters={true}>
                     <IconButton
                         color="inherit"
                         aria-label="Open drawer"
-                        onClick={this.handleDrawerOpen}
+                        onClick={this.handleSidebar}
                         className={classes.menuButton}
                     >
-                        {this.state.open ? <MenuIconOpen classes={{root: classes.menuButtonIconClose}} /> : <MenuIconOpen classes={{root: classes.menuButtonIconOpen}} />}
+                        {this.state.sidebarOpen ? <MenuOpenTwoToneIcon classes={{root: classes.menuButtonIconClose}} /> : <MenuOpenTwoToneIcon classes={{root: classes.menuButtonIconOpen}} />}
                     </IconButton>
 
                     <Typography
@@ -160,33 +181,31 @@ class AppSidebar extends React.Component {
                         </Switch>
                     </Typography>
                     <div>
-                        <LinkButton to="/photo/new">(+)</LinkButton>
-                        <LinkButton to="/album/new">(+)</LinkButton>
+                        <LinkButton to="/photo/new"><AddPhotoAlternateTwoToneIcon /></LinkButton>
+                        <LinkButton to="/album/new"><PlaylistAddTwoToneIcon /></LinkButton>
 
                         <IconButton
-                            aria-owns={open ? "menu-appbar" : undefined}
-                            aria-haspopup="true"
-                            onClick={this.handleMenu}
+                            onClick={this.openAppbarMenu}
                             color="inherit"
                         >
-                            <AccountIcon />
+                            <AccountCircleTwoToneIcon />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
-                            anchorEl={anchorEl}
+                            anchorEl={this.topMenuAnchorElement}
                             anchorOrigin={{
                                 vertical: "top",
-                                horizontal: "right"
+                                horizontal: "left"
                             }}
                             transformOrigin={{
                                 vertical: "top",
-                                horizontal: "right"
+                                horizontal: "left"
                             }}
-                            open={open}
-                            onClose={this.handleClose}
+                            open={this.state.topMenuOpen}
+                            onClose={this.closeAppbarMenu}
                         >
-                            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                            <MenuItem onClick={this.closeAppbarMenu}>Profil</MenuItem>
+                            <MenuItem onClick={this.closeAppbarMenu}>Mein Konto</MenuItem>
                         </Menu>
                     </div>
                     </Toolbar>
@@ -194,23 +213,23 @@ class AppSidebar extends React.Component {
                 <Drawer
                     variant="permanent"
                     className={classNames(classes.drawer, {
-                        [classes.drawerOpen]: this.state.open,
-                        [classes.drawerClose]: !this.state.open
+                        [classes.sidebarOpen]: this.state.sidebarOpen,
+                        [classes.sidebarClose]: !this.state.sidebarOpen
                     })}
                     classes={{
-                    paper: classNames({
-                        [classes.drawerOpen]: this.state.open,
-                        [classes.drawerClose]: !this.state.open
-                    })
+                        paper: classNames({
+                            [classes.sidebarOpen]: this.state.sidebarOpen,
+                            [classes.sidebarClose]: !this.state.sidebarOpen
+                        })
                     }}
-                    open={this.state.open}
+                    open={this.state.sidebarOpen}
                 >
                     <div className={classes.toolbar} />
 
                     {menuMain.map((link, index) => (
                         <ListItem button key={link.text} component="a" href={link.href}>
                             <ListItemIcon>{link.icon}</ListItemIcon>
-                            <ListItemText primary={link.text} />
+                            <ListItemText primary={link.text} secondary={link.subtext} />
                         </ListItem>
                     ))}
 
@@ -222,6 +241,22 @@ class AppSidebar extends React.Component {
                             <ListItemText primary={link.text} />
                         </ListItem>
                     ))}
+
+                    <Divider />
+
+                    <ListItem button onClick={this.handleAlbumClick}>
+                        <ListItemIcon><InfoTwoToneIcon /></ListItemIcon>
+                        <ListItemText primary="Test" />
+                        {this.state.albumOpen ? <ExpandLessTwoToneIcon /> : <ExpandMoreTwoToneIcon />}
+                    </ListItem>
+                    <Collapse in={this.state.albumOpen} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItem button className={classes.nested}>
+                                <ListItemIcon><InfoTwoToneIcon /></ListItemIcon>
+                                <ListItemText primary="Starred" />
+                            </ListItem>
+                        </List>
+                    </Collapse>
                 </Drawer>
             </React.Fragment>
         );
