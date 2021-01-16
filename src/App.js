@@ -17,7 +17,10 @@ import ListAlbumPage from './pages/album/list';
 import ShowAlbumPage from './pages/album/show';
 import EditAlbumPage from './pages/album/edit';
 
-import Module from './pages/module/index';
+import ModuleBasicPage from './pages/module/basic';
+import ModuleListPage from './pages/module/list';
+import ModuleDetailPage from './pages/module/detail';
+import ModuleFormPage from './pages/module/form';
 
 import DB from './db';
 
@@ -392,7 +395,10 @@ class App extends Component {
                 <Route exact path="/album/new" component={(props) => <EditAlbumPage {...props} album={undefined} onSave={this.handleAlbumSave} />} />
 
                 {/* Module */}
-                <Route exact path="/module" component={(props) => <Module {...props} {...appProps} />} />
+                <Route exact path="/module/basic" component={(props) => <ModuleBasicPage {...props} {...appProps} />} />
+                <Route exact path="/module/list" component={(props) => <ModuleListPage {...props} {...appProps} />} />
+                <Route exact path="/module/detail" component={(props) => <ModuleDetailPage {...props} {...appProps} />} />
+                <Route exact path="/module/form" component={(props) => <ModuleFormPage {...props} {...appProps} />} />
             </div>
         );
     }

@@ -34,7 +34,7 @@ const menuMain = [
 ];
 
 const menuSecond = [
-    {href: '/module', text: 'Modulübersicht', icon: <ViewModuleTwoToneIcon />, submenu: [
+    {href: '/module', text: 'Module', icon: <ViewModuleTwoToneIcon />, submenu: [
         {href: '/module/basic', text: 'Basic', icon: <ViewModuleTwoToneIcon />},
         {href: '/module/list', text: 'Liste', icon: <ViewModuleTwoToneIcon />},
         {href: '/module/detail', text: 'Detail', icon: <ViewModuleTwoToneIcon />},

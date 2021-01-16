@@ -24,7 +24,7 @@ const useStyles = theme => ({
     },
 });
 
-class Module extends React.Component {
+class ModuleListPage extends React.Component {
     render() {
         let { classes } = this.props;
 
@@ -41,8 +41,8 @@ class Module extends React.Component {
     }
 }
 
-Module.propTypes = {
+ModuleListPage.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(useStyles)(Module);
+export default withStyles(useStyles)(ModuleListPage);
