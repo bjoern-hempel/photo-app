@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import { formatDate } from '../../utils/date';
 
 /**
- * Creates a new or edit an existing album element. 
+ * Creates a new or edit an existing album element.
  */
-export default class EditAlbumPage extends React.Component {
+export default class AlbumEditPage extends React.Component {
     newAlbum = {
         createdAt: (new Date()).toISOString(),
         updatedAt: (new Date()).toISOString(),

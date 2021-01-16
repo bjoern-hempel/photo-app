@@ -9,18 +9,22 @@ import { ThemeProvider, withStyles } from '@material-ui/core/styles';
 import { unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core';
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-import ListPhotoPage from './pages/photo/list';
-import ShowPhotoPage from './pages/photo/show';
-import EditPhotoPage from './pages/photo/edit';
+import PhotoListPage from './pages/photo/list';
+import PhotoShowPage from './pages/photo/show';
+import PhotoEditPage from './pages/photo/edit';
 
-import ListAlbumPage from './pages/album/list';
-import ShowAlbumPage from './pages/album/show';
-import EditAlbumPage from './pages/album/edit';
+import AlbumListPage from './pages/album/list';
+import AlbumShowPage from './pages/album/show';
+import AlbumEditPage from './pages/album/edit';
 
 import ModuleBasicPage from './pages/module/basic';
 import ModuleListPage from './pages/module/list';
 import ModuleDetailPage from './pages/module/detail';
 import ModuleFormPage from './pages/module/form';
+
+import InfoPage from './pages/info/index';
+
+import HelpPage from './pages/help/index';
 
 import DB from './db';
 
@@ -380,25 +384,31 @@ class App extends Component {
                 <CssBaseline />
 
                 {/* Photos: index/list, show/detail, new  */}
-                <Route exact path="/" component={(props) => <ListPhotoPage {...props} photos={this.state.photos} onDelete={this.handlePhotoDelete} />} />
-                <Route exact path="/photo" component={(props) => <ListPhotoPage {...props} photos={this.state.photos} onDelete={this.handlePhotoDelete} />} />
-                <Route exact path="/photo/list" component={(props) => <ListPhotoPage {...props} photos={this.state.photos} onDelete={this.handlePhotoDelete} />} />
-                <Route exact path="/photo/show/:id" component={(props) => <ShowPhotoPage {...props} photo={this.state.photos[props.match.params.id]} />}  />
-                <Route exact path="/photo/edit/:id" component={(props) => <EditPhotoPage {...props} photo={this.state.photos[props.match.params.id]} albums={this.state.albums} onSave={this.handlePhotoSave} />}  />
-                <Route exact path="/photo/new" component={(props) => <EditPhotoPage {...props} photo={undefined} albums={this.state.albums} onSave={this.handlePhotoSave} />} />
+                <Route exact path="/" component={(props) => <PhotoListPage {...props} photos={this.state.photos} onDelete={this.handlePhotoDelete} />} />
+                <Route exact path="/photo" component={(props) => <PhotoListPage {...props} photos={this.state.photos} onDelete={this.handlePhotoDelete} />} />
+                <Route exact path="/photo/list" component={(props) => <PhotoListPage {...props} photos={this.state.photos} onDelete={this.handlePhotoDelete} />} />
+                <Route exact path="/photo/show/:id" component={(props) => <PhotoShowPage {...props} photo={this.state.photos[props.match.params.id]} />}  />
+                <Route exact path="/photo/edit/:id" component={(props) => <PhotoEditPage {...props} photo={this.state.photos[props.match.params.id]} albums={this.state.albums} onSave={this.handlePhotoSave} />}  />
+                <Route exact path="/photo/new" component={(props) => <PhotoEditPage {...props} photo={undefined} albums={this.state.albums} onSave={this.handlePhotoSave} />} />
 
                 {/* Albums: index/list, show/detail, new */}
-                <Route exact path="/album" component={(props) => <ListAlbumPage {...props} albums={this.state.albums} onDelete={this.handleAlbumDelete} />} />
-                <Route exact path="/album/list" component={(props) => <ListAlbumPage {...props} albums={this.state.albums} onDelete={this.handleAlbumDelete} />} />
-                <Route exact path="/album/show/:id" component={(props) => <ShowAlbumPage {...props} album={this.state.albums[props.match.params.id]} />}  />
-                <Route exact path="/album/edit/:id" component={(props) => <EditAlbumPage {...props} album={this.state.albums[props.match.params.id]} onSave={this.handleAlbumSave} />}  />
-                <Route exact path="/album/new" component={(props) => <EditAlbumPage {...props} album={undefined} onSave={this.handleAlbumSave} />} />
+                <Route exact path="/album" component={(props) => <AlbumListPage {...props} albums={this.state.albums} onDelete={this.handleAlbumDelete} />} />
+                <Route exact path="/album/list" component={(props) => <AlbumListPage {...props} albums={this.state.albums} onDelete={this.handleAlbumDelete} />} />
+                <Route exact path="/album/show/:id" component={(props) => <AlbumShowPage {...props} album={this.state.albums[props.match.params.id]} />}  />
+                <Route exact path="/album/edit/:id" component={(props) => <AlbumEditPage {...props} album={this.state.albums[props.match.params.id]} onSave={this.handleAlbumSave} />}  />
+                <Route exact path="/album/new" component={(props) => <AlbumEditPage {...props} album={undefined} onSave={this.handleAlbumSave} />} />
 
                 {/* Module */}
                 <Route exact path="/module/basic" component={(props) => <ModuleBasicPage {...props} {...appProps} />} />
                 <Route exact path="/module/list" component={(props) => <ModuleListPage {...props} {...appProps} />} />
                 <Route exact path="/module/detail" component={(props) => <ModuleDetailPage {...props} {...appProps} />} />
                 <Route exact path="/module/form" component={(props) => <ModuleFormPage {...props} {...appProps} />} />
+
+                {/* Info */}
+                <Route exact path="/info" component={(props) => <InfoPage {...props} {...appProps} />} />
+
+                {/* Help */}
+                <Route exact path="/help" component={(props) => <HelpPage {...props} {...appProps} />} />
             </div>
         );
     }

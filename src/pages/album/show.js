@@ -2,7 +2,7 @@ import React from 'react';
 
 import { formatDate } from '../../utils/date';
 
-export default class ShowAlbumPage extends React.Component {
+export default class AlbumShowPage extends React.Component {
     state = {
         album: this.props.album
     }

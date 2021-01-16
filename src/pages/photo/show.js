@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { formatDate } from '../../utils/date';
 
-export default class ShowPhotoPage extends React.Component {
+export default class PhotoShowPage extends React.Component {
     state = {
         photo: this.props.photo
     }

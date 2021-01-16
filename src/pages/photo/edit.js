@@ -6,13 +6,13 @@ import DesignMoleculeAlbumSelect from '../../design/molecule/album/select';
 import { formatDate } from '../../utils/date';
 
 /**
- * Creates a new or edit an existing photo element. 
+ * Creates a new or edit an existing photo element.
  */
-export default class EditPhotoPage extends React.Component {
+export default class PhotoEditPage extends React.Component {
     newPhoto = {
         createdAt: (new Date()).toISOString(),
         updatedAt: (new Date()).toISOString(),
-        
+
         paths: {
             localDirect: '/images/DSC07434.JPG',
             localPhotoApp: '/photo-app/images/DSC07434.JPG',

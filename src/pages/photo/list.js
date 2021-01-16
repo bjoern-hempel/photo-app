@@ -1,7 +1,7 @@
 import React from 'react';
 import PhotoList from '../../components/photo/list';
 
-export default class ListPhotoPage extends React.Component {
+export default class PhotoListPage extends React.Component {
     render() {
         const photos = Object.values(this.props.photos);
 

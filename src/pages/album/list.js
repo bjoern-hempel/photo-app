@@ -1,7 +1,7 @@
 import React from 'react';
 import AlbumList from '../../components/album/list';
 
-export default class ListAlbumPage extends React.Component {
+export default class AlbumListPage extends React.Component {
     render() {
         const albums = Object.values(this.props.albums);
 
