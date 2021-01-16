@@ -23,21 +23,23 @@ import ExpandLessTwoToneIcon from '@material-ui/icons/ExpandLessTwoTone';
 import ExpandMoreTwoToneIcon from '@material-ui/icons/ExpandMoreTwoTone';
 
 // import own components
-import LinkButton from '../design/atom/linkButton';
+import DesignAtomLinkButton from '../design/atom/linkButton';
+import DesignAtomListItem from '../design/atom/listItem';
 
 const drawerWidth = 220;
 
 const menuMain = [
-    {submenu: [
-        {href: '/photo', text: 'Foto Stream', subtext: '4 Bilder', icon: <PhotoLibraryTwoToneIcon />},
-        {href: '/photo/ignored', text: 'Foto Stream', subtext: '4 Bilder', icon: <PhotoLibraryTwoToneIcon />},
-        {href: '/photo/new', text: 'Foto Stream', subtext: '4 Bilder', icon: <PhotoLibraryTwoToneIcon />},
-    ], href: '/photo', text: 'Foto Stream', subtext: '4 Bilder', icon: <PhotoLibraryTwoToneIcon />},
+    {href: '/photo', text: 'Fotos', subtext: '4 Bilder', icon: <PhotoLibraryTwoToneIcon />},
     {href: '/album', text: 'Foto Alben', subtext: '3 Alben', icon: <PhotoAlbumTwoToneIcon />}
 ];
 
 const menuSecond = [
-    {href: '/module', text: 'Modulübersicht', icon: <ViewModuleTwoToneIcon />},
+    {href: '/module', text: 'Modulübersicht', icon: <ViewModuleTwoToneIcon />, submenu: [
+        {href: '/module/basic', text: 'Basic', icon: <ViewModuleTwoToneIcon />},
+        {href: '/module/list', text: 'Liste', icon: <ViewModuleTwoToneIcon />},
+        {href: '/module/detail', text: 'Detail', icon: <ViewModuleTwoToneIcon />},
+        {href: '/module/form', text: 'Form', icon: <ViewModuleTwoToneIcon />},
+    ]},
     {href: '/info', text: 'Info', icon: <InfoTwoToneIcon />},
     {href: '/help', text: 'Hilfe', icon: <ImportContactsTwoToneIcon />}
 ];
@@ -121,7 +123,9 @@ class AppSidebar extends React.Component {
         topMenuOpen: false,
 
         photoOpen: true,
-        albumOpen: true
+        albumOpen: true,
+
+        sidebarMenuSecondClickOpen: {}
     };
 
     topMenuAnchorElement = null;
@@ -133,6 +137,19 @@ class AppSidebar extends React.Component {
     handleAlbumClick = () => {
         this.setState({albumOpen: !this.state.albumOpen});
     };
+
+    handleSidebarMenuSecondClick = (index) => {
+        let open = this.getSidebarMenuSecondOpen(index);
+        let sidebarMenuSecondClickOpen = this.state.sidebarMenuSecondClickOpen;
+
+        sidebarMenuSecondClickOpen[index] = !open;
+
+        this.setState({sidebarMenuSecondClickOpen: sidebarMenuSecondClickOpen});
+    };
+
+    getSidebarMenuSecondOpen = (index) => {
+        return this.state.sidebarMenuSecondClickOpen.hasOwnProperty(index) && this.state.sidebarMenuSecondClickOpen[index] ? true : false;
+    }
 
     openAppbarMenu = (event) => {
         this.topMenuAnchorElement = event.currentTarget;
@@ -181,8 +198,8 @@ class AppSidebar extends React.Component {
                         </Switch>
                     </Typography>
                     <div>
-                        <LinkButton to="/photo/new"><AddPhotoAlternateTwoToneIcon /></LinkButton>
-                        <LinkButton to="/album/new"><PlaylistAddTwoToneIcon /></LinkButton>
+                        <DesignAtomLinkButton to="/photo/new"><AddPhotoAlternateTwoToneIcon /></DesignAtomLinkButton>
+                        <DesignAtomLinkButton to="/album/new"><PlaylistAddTwoToneIcon /></DesignAtomLinkButton>
 
                         <IconButton
                             onClick={this.openAppbarMenu}
@@ -226,37 +243,33 @@ class AppSidebar extends React.Component {
                 >
                     <div className={classes.toolbar} />
 
-                    {menuMain.map((link, index) => (
-                        <ListItem button key={link.text} component="a" href={link.href}>
-                            <ListItemIcon>{link.icon}</ListItemIcon>
-                            <ListItemText primary={link.text} secondary={link.subtext} />
-                        </ListItem>
+                    {menuMain.map((menuItem, index) => (
+                        <DesignAtomListItem to={menuItem.href} text={menuItem.text}>{menuItem.icon}</DesignAtomListItem>
                     ))}
 
                     <Divider />
 
-                    {menuSecond.map((link, index) => (
-                        <ListItem button key={link.text} component="a" href={link.href}>
-                            <ListItemIcon>{link.icon}</ListItemIcon>
-                            <ListItemText primary={link.text} />
-                        </ListItem>
+                    {menuSecond.map((menuItem, index) => (
+                        <React.Fragment>
+                            {menuItem.hasOwnProperty('submenu') ?
+                                <React.Fragment>
+                                    <ListItem button key={menuItem.text} onClick={() => this.handleSidebarMenuSecondClick(index) }>
+                                        <ListItemIcon>{menuItem.icon}</ListItemIcon>
+                                        <ListItemText primary={menuItem.text} />
+                                        {this.getSidebarMenuSecondOpen(index) ? <ExpandLessTwoToneIcon /> : <ExpandMoreTwoToneIcon />}
+                                    </ListItem>
+                                    <Collapse in={this.getSidebarMenuSecondOpen(index)} timeout="auto" unmountOnExit>
+                                        <List component="div" disablePadding>
+                                            {menuItem.submenu.map((submenuItem, index) => (
+                                                <DesignAtomListItem to={submenuItem.href} text={submenuItem.text} className={classes.nested}>{submenuItem.icon}</DesignAtomListItem>
+                                            ))}
+                                        </List>
+                                    </Collapse>
+                                </React.Fragment> :
+                                <DesignAtomListItem to={menuItem.href} text={menuItem.text}>{menuItem.icon}</DesignAtomListItem>
+                            }
+                        </React.Fragment>
                     ))}
-
-                    <Divider />
-
-                    <ListItem button onClick={this.handleAlbumClick}>
-                        <ListItemIcon><InfoTwoToneIcon /></ListItemIcon>
-                        <ListItemText primary="Test" />
-                        {this.state.albumOpen ? <ExpandLessTwoToneIcon /> : <ExpandMoreTwoToneIcon />}
-                    </ListItem>
-                    <Collapse in={this.state.albumOpen} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <ListItem button className={classes.nested}>
-                                <ListItemIcon><InfoTwoToneIcon /></ListItemIcon>
-                                <ListItemText primary="Starred" />
-                            </ListItem>
-                        </List>
-                    </Collapse>
                 </Drawer>
             </React.Fragment>
         );
