@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 
 import { formatDate } from '../../utils/date';
 
@@ -40,20 +42,22 @@ export default class PhotoList extends React.Component {
         const photos = Object.values(this.props.photos);
 
         return photos.map((n) =>
-            <div id={'photo-element-' + n._id} key={n._id}>
-                <h2>
-                    {n.title} -&nbsp;
-                    <small>
-                        { formatDate(n.createdAt) }
-                        <Link to={`/photo/show/${n._id}`}>Show</Link> -&nbsp;
-                        <Link to={`/photo/edit/${n._id}`}>Edit</Link> -&nbsp;
-                        <Link to={`#`} data-id={n._id} onClick={this.handleDelete}>Delete</Link>
-                    </small>
-                </h2>
-                <div>
-                    <img src={n.paths.localDirect} width="200" />
+            <React.Fragment>
+                <div id={'photo-element-' + n._id} key={n._id}>
+                    <h2>
+                        {n.title} -&nbsp;
+                        <small>
+                            { formatDate(n.createdAt) }
+                            <Link to={`/photo/show/${n._id}`}>Show</Link> -&nbsp;
+                            <Link to={`/photo/edit/${n._id}`}>Edit</Link> -&nbsp;
+                            <Link to={`#`} data-id={n._id} onClick={this.handleDelete}>Delete</Link>
+                        </small>
+                    </h2>
+                    <div>
+                        <img src={n.paths.localDirect} width="200" />
+                    </div>
                 </div>
-            </div>
+            </React.Fragment>
         )
     }
 
@@ -62,9 +66,11 @@ export default class PhotoList extends React.Component {
      */
     render() {
         return (
-            <div>
-                { this.renderPhotos() }
-            </div>
+            <React.Fragment>
+                <div>
+                    { this.renderPhotos() }
+                </div>
+            </React.Fragment>
         )
     }
 }

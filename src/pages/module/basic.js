@@ -1,9 +1,9 @@
 import React from 'react';
-
-import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
+
+import { Typography, Grid, Box } from '@material-ui/core';
 
 /**
  * Add some custom classes to theme (via Higher-order component API).
@@ -14,13 +14,8 @@ import PropTypes from 'prop-types';
  */
 const useStyles = theme => ({
     root: {
-      background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-      border: 0,
-      borderRadius: 3,
-      boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-      color: 'white',
-      height: 48,
-      padding: '0 30px',
+        width: '100%',
+        maxWidth: 750,
     },
 });
 
@@ -29,14 +24,86 @@ class ModuleBasicPage extends React.Component {
         let { classes } = this.props;
 
         return (
-            <div>
-                <Button variant="contained" color="primary" className={classes.root}>
-                    Hello World
-                </Button>
-                <Button variant="contained" color="primary">
-                    Hello World
-                </Button>
-            </div>
+            <React.Fragment>
+                <div className={classes.root}>
+                    <Typography variant="h1" gutterBottom>h1. Heading</Typography>
+                    <Typography variant="h2" gutterBottom>h2. Heading</Typography>
+                    <Typography variant="h3" gutterBottom>h3. Heading</Typography>
+                    <Typography variant="h4" gutterBottom>h4. Heading</Typography>
+                    <Typography variant="h5" gutterBottom>h5. Heading</Typography>
+                    <Typography variant="h6" gutterBottom>h6. Heading</Typography>
+
+                    <Typography variant="subtitle1" gutterBottom>
+                        subtitle1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
+                    </Typography>
+
+                    <Typography variant="subtitle2" gutterBottom>
+                        subtitle2. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
+                    </Typography>
+
+                    <Typography variant="body1" gutterBottom>
+                        body1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
+                        unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
+                        dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
+                    </Typography>
+
+                    <Typography variant="body2" gutterBottom>
+                        body2. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
+                        unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
+                        dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
+                    </Typography>
+
+                    <Typography variant="button" display="block" gutterBottom>
+                        button text
+                    </Typography>
+
+                    <Typography variant="caption" display="block" gutterBottom>
+                        caption text
+                    </Typography>
+
+                    <Typography variant="overline" display="block" gutterBottom>
+                        overline text
+                    </Typography>
+                </div>
+                <Grid container>
+                    <Box
+                        boxShadow={0}
+                        bgcolor="background.paper"
+                        m={1}
+                        p={1}
+                        style={{ width: '8rem', height: '5rem' }}
+                    >
+                        boxShadow={0}
+                    </Box>
+                    <Box
+                        boxShadow={1}
+                        bgcolor="background.paper"
+                        m={1}
+                        p={1}
+                        style={{ width: '8rem', height: '5rem' }}
+                    >
+                        boxShadow={1}
+                    </Box>
+                    <Box
+                        boxShadow={2}
+                        bgcolor="background.paper"
+                        m={1}
+                        p={1}
+                        style={{ width: '8rem', height: '5rem' }}
+                    >
+                        boxShadow={2}
+                    </Box>
+                    <Box
+                        boxShadow={3}
+                        bgcolor="background.paper"
+                        m={1}
+                        p={1}
+                        style={{ width: '8rem', height: '5rem' }}
+                    >
+                        boxShadow={3}
+                    </Box>
+                </Grid>
+            </React.Fragment>
         )
     }
 }

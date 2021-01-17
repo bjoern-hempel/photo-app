@@ -55,7 +55,7 @@ const theme = createMuiTheme({
  *
  * @param {*} theme
  */
-const styles = theme => ({
+const useStyles = theme => ({
     root: {
         display: "flex"
     },
@@ -399,16 +399,16 @@ class App extends Component {
                 <Route exact path="/album/new" component={(props) => <AlbumEditPage {...props} album={undefined} onSave={this.handleAlbumSave} />} />
 
                 {/* Module */}
-                <Route exact path="/module/basic" component={(props) => <ModuleBasicPage {...props} {...appProps} />} />
-                <Route exact path="/module/list" component={(props) => <ModuleListPage {...props} {...appProps} />} />
-                <Route exact path="/module/detail" component={(props) => <ModuleDetailPage {...props} {...appProps} />} />
-                <Route exact path="/module/form" component={(props) => <ModuleFormPage {...props} {...appProps} />} />
+                <Route exact path="/module/basic" component={(props) => <ModuleBasicPage {...props} />} />
+                <Route exact path="/module/list" component={(props) => <ModuleListPage {...props} />} />
+                <Route exact path="/module/detail" component={(props) => <ModuleDetailPage {...props} />} />
+                <Route exact path="/module/form" component={(props) => <ModuleFormPage {...props} />} />
 
                 {/* Info */}
-                <Route exact path="/info" component={(props) => <InfoPage {...props} {...appProps} />} />
+                <Route exact path="/info" component={(props) => <InfoPage {...props} />} />
 
                 {/* Help */}
-                <Route exact path="/help" component={(props) => <HelpPage {...props} {...appProps} />} />
+                <Route exact path="/help" component={(props) => <HelpPage {...props} />} />
             </div>
         );
     }
@@ -439,4 +439,4 @@ App.propTypes = {
     theme: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(App);
+export default withStyles(useStyles, { withTheme: true })(App);
