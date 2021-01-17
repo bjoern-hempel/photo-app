@@ -244,29 +244,29 @@ class AppSidebar extends React.Component {
                     <div className={classes.toolbar} />
 
                     {menuMain.map((menuItem, index) => (
-                        <DesignAtomListItem to={menuItem.href} text={menuItem.text}>{menuItem.icon}</DesignAtomListItem>
+                        <DesignAtomListItem key={'menu-main-design-atom-list-item-' + index} to={menuItem.href} text={menuItem.text}>{menuItem.icon}</DesignAtomListItem>
                     ))}
 
                     <Divider />
 
-                    {menuSecond.map((menuItem, index) => (
-                        <React.Fragment>
+                    {menuSecond.map((menuItem, menuSecondIndex) => (
+                        <React.Fragment key={'menu-second-fragment-1-' + menuSecondIndex}>
                             {menuItem.hasOwnProperty('submenu') ?
-                                <React.Fragment>
-                                    <ListItem button key={menuItem.text} onClick={() => this.handleSidebarMenuSecondClick(index) }>
+                                <React.Fragment key={'menu-second-fragment-2-' + menuSecondIndex}>
+                                    <ListItem button key={'menu-second-list-item-' + menuSecondIndex} onClick={() => this.handleSidebarMenuSecondClick(menuSecondIndex) }>
                                         <ListItemIcon>{menuItem.icon}</ListItemIcon>
                                         <ListItemText primary={menuItem.text} />
-                                        {this.getSidebarMenuSecondOpen(index) ? <ExpandLessTwoToneIcon /> : <ExpandMoreTwoToneIcon />}
+                                        {this.getSidebarMenuSecondOpen(menuSecondIndex) ? <ExpandLessTwoToneIcon /> : <ExpandMoreTwoToneIcon />}
                                     </ListItem>
-                                    <Collapse in={this.getSidebarMenuSecondOpen(index)} timeout="auto" unmountOnExit>
+                                    <Collapse key={'menu-second-collapse-' + menuSecondIndex} in={this.getSidebarMenuSecondOpen(menuSecondIndex)} timeout="auto" unmountOnExit>
                                         <List component="div" disablePadding>
-                                            {menuItem.submenu.map((submenuItem, index) => (
-                                                <DesignAtomListItem to={submenuItem.href} text={submenuItem.text} className={classes.nested}>{submenuItem.icon}</DesignAtomListItem>
+                                            {menuItem.submenu.map((submenuItem, menuItemIndex) => (
+                                                <DesignAtomListItem key={'menu-second-design-list-item-' + menuSecondIndex + '-' + menuItemIndex} to={submenuItem.href} text={submenuItem.text} className={classes.nested}>{submenuItem.icon}</DesignAtomListItem>
                                             ))}
                                         </List>
                                     </Collapse>
                                 </React.Fragment> :
-                                <DesignAtomListItem to={menuItem.href} text={menuItem.text}>{menuItem.icon}</DesignAtomListItem>
+                                <DesignAtomListItem key={'menu-second-design-atom-list-item-' + menuSecondIndex} to={menuItem.href} text={menuItem.text}>{menuItem.icon}</DesignAtomListItem>
                             }
                         </React.Fragment>
                     ))}

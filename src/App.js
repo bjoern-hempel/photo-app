@@ -4,7 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import PropTypes from "prop-types";
 
 /* Material ui components */
-import { ThemeProvider, withStyles, createMuiTheme, adaptV4Theme } from '@material-ui/core/styles';
+import { ThemeProvider, withStyles, createMuiTheme } from '@material-ui/core/styles';
 import { StylesProvider, CssBaseline } from '@material-ui/core';
 
 /* Own CSS design definitions */
@@ -43,7 +43,7 @@ import HelpPage from './pages/help/index';
  *
  * @see https://material.io/design/color/the-color-system.html
  */
-const theme = createMuiTheme(adaptV4Theme({
+const theme = createMuiTheme({
     palette: {
         primary: {
             light: '#4dabf5',
@@ -58,7 +58,7 @@ const theme = createMuiTheme(adaptV4Theme({
             contrastText: '#000',
         },
     },
-}));
+});
 
 /**
  * Define some styles
@@ -385,8 +385,6 @@ class App extends Component {
         if (this.state.loading) {
             return <h2>Loading...</h2>
         }
-
-        let appProps = this.props;
 
         return (
             <div className="app-content">
