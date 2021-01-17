@@ -1,45 +1,55 @@
+/* React components */
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-
-import './App.css';
-import AppSidebar from './components/appSidebar';
 import PropTypes from "prop-types";
 
-import { ThemeProvider, withStyles } from '@material-ui/core/styles';
-import { unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core';
-import CssBaseline from "@material-ui/core/CssBaseline";
+/* Material ui components */
+import { ThemeProvider, withStyles, createMuiTheme, adaptV4Theme } from '@material-ui/core/styles';
+import { StylesProvider, CssBaseline } from '@material-ui/core';
 
+/* Own CSS design definitions */
+import './App.css';
+
+/* Some own libraries */
+import DB from './db';
+
+/* Sidebar */
+import AppSidebar from './components/appSidebar';
+
+/* Photos pages */
 import PhotoListPage from './pages/photo/list';
 import PhotoShowPage from './pages/photo/show';
 import PhotoEditPage from './pages/photo/edit';
 
+/* Album pages */
 import AlbumListPage from './pages/album/list';
 import AlbumShowPage from './pages/album/show';
 import AlbumEditPage from './pages/album/edit';
 
+/* Module pages */
 import ModuleBasicPage from './pages/module/basic';
 import ModuleListPage from './pages/module/list';
 import ModuleDetailPage from './pages/module/detail';
 import ModuleFormPage from './pages/module/form';
 
+/* Info pages */
 import InfoPage from './pages/info/index';
 
+/* Help pages */
 import HelpPage from './pages/help/index';
-
-import DB from './db';
 
 /**
  * Create default mui theme.
  *
  * @see https://material.io/design/color/the-color-system.html
  */
-const theme = createMuiTheme({
+const theme = createMuiTheme(adaptV4Theme({
     palette: {
         primary: {
             light: '#4dabf5',
             main: '#2196f3',
             dark: '#1769aa',
-            contrastText: '##ffffff',
+            contrastText: '#ffffff',
         },
         secondary: {
             light: '#ffcf33',
@@ -48,7 +58,7 @@ const theme = createMuiTheme({
             contrastText: '#000',
         },
     },
-});
+}));
 
 /**
  * Define some styles
@@ -380,8 +390,6 @@ class App extends Component {
 
         return (
             <div className="app-content">
-                {/* A collection of HTML element and attribute style-normalizations */}
-                <CssBaseline />
 
                 {/* Photos: index/list, show/detail, new  */}
                 <Route exact path="/" component={(props) => <PhotoListPage {...props} photos={this.state.photos} onDelete={this.handlePhotoDelete} />} />
@@ -417,19 +425,25 @@ class App extends Component {
         const { classes } = this.props;
 
         return (
-            <ThemeProvider theme={theme}>
-                <BrowserRouter>
-                    <div className={classes.root}>
-                        <CssBaseline />
+            <StylesProvider injectFirst>
+                <ThemeProvider theme={theme}>
+                    <BrowserRouter>
+                        <div className={classes.root}>
+                            {/* A collection of HTML element and attribute style-normalizations */}
+                            <CssBaseline />
+
+                            {/* The appbar of this app. */}
                             <AppSidebar />
 
+                            {/* Render the content */}
                             <main className={classes.content}>
                                 <div className={classes.toolbar} />
                                 { this.renderContent() }
                             </main>
                         </div>
-                </BrowserRouter>
-            </ThemeProvider>
+                    </BrowserRouter>
+                </ThemeProvider>
+            </StylesProvider>
         );
     }
 }
