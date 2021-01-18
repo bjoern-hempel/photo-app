@@ -41,10 +41,6 @@ class Images {
 
     /**
      * Fix current row, because the next image is too wide.
-     *
-     * @param {*} currentRow
-     * @param {*} landscapes
-     * @param {*} cols
      */
     fixCurrentRow(colsMax) {
         let colsWidth = this.currentRow.colsWidth;
@@ -58,6 +54,14 @@ class Images {
         let missingCols = 0;
         let addCols = 0;
         let newCols = [];
+
+        missingCols = colsMax - colsWidth;
+        addCols = Math.ceil(missingCols / cols.length);
+
+        if (addCols > 1 && useLandscapes) {
+            useLandscapes = false;
+            cols = colsAll;
+        }
 
         do {
             missingCols = colsMax - colsWidth;
@@ -87,7 +91,7 @@ class Images {
 
         /* rebuild all images */
         this.images.map((item, index) => {
-            let addCols = item.portrait ? (item.square ? this.squareCols : this.portraitCols) : this.landscapeCols;
+            let addCols = item.imageMode === 'portrait' ? this.portraitCols : (item.imageMode === 'square' ? this.squareCols : this.landscapeCols);
 
             // this image is too wide.
             if ((this.currentRow.colsWidth + addCols) > this.cols) {
@@ -106,7 +110,7 @@ class Images {
                 this.images[index].title = this.images[index].title.replace(/%i/, index + 1);
             }
 
-            if (!item.portrait || item.square) {
+            if (item.imageMode === 'landscape') {
                 this.currentRow.indexesLandscape.push(index);
                 this.currentRow.colsLandscape.push(addCols);
             }
