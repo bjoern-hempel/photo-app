@@ -105,7 +105,7 @@ class Images {
             this.images[index] = {...defaultValue, ...this.images[index]};
 
             if (this.images[index].title === null) {
-                this.images[index].title = this.images[index].img;
+                this.images[index].title = this.images[index].imgOriginal1x;
             } else {
                 this.images[index].title = this.images[index].title.replace(/%i/, index + 1);
             }
