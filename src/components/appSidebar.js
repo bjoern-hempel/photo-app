@@ -21,12 +21,13 @@ import AddPhotoAlternateTwoToneIcon from '@material-ui/icons/AddPhotoAlternateTw
 import PlaylistAddTwoToneIcon from '@material-ui/icons/PlaylistAddTwoTone';
 import ExpandLessTwoToneIcon from '@material-ui/icons/ExpandLessTwoTone';
 import ExpandMoreTwoToneIcon from '@material-ui/icons/ExpandMoreTwoTone';
+import MenuTwoToneIcon from '@material-ui/icons/MenuTwoTone';
 
 // import own components
 import DesignAtomLinkButton from '../design/atom/linkButton';
 import DesignAtomListItem from '../design/atom/listItem';
 
-const drawerWidth = 220;
+const drawerWidth = 300;
 
 const menuMain = [
     {href: '/photo', text: 'Fotos', subtext: '4 Bilder', icon: <PhotoLibraryTwoToneIcon />},
@@ -48,14 +49,6 @@ const styles = theme => ({
     appBar: {
         zIndex: theme.zIndex.drawer + 1
     },
-    appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(["width", "margin"], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen
-    })
-    },
     menuButton: {
         marginLeft: 12,
         marginRight: 36
@@ -74,32 +67,7 @@ const styles = theme => ({
         }),
         transform: "rotate(180deg)"
     },
-    hide: {
-        display: "none"
-    },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
-        whiteSpace: "nowrap"
-    },
-    sidebarOpen: {
-        width: drawerWidth,
-        transition: theme.transitions.create("width", {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen
-        })
-    },
-    sidebarClose: {
-        transition: theme.transitions.create("width", {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen
-        }),
-        overflowX: "hidden",
-        width: theme.spacing(7) + 1,
-        [theme.breakpoints.up("sm")]: {
-            width: theme.spacing(9) + 1
-        }
-    },
+
     toolbar: {
         display: "flex",
         alignItems: "center",
@@ -118,20 +86,30 @@ const styles = theme => ({
 
 class AppSidebar extends React.Component {
     state = {
-        sidebarOpen: true,
+        sidebarOpen: false,
 
         topMenuOpen: false,
 
         photoOpen: true,
         albumOpen: true,
 
-        sidebarMenuSecondClickOpen: {}
+        sidebarMenuSecondClickOpen: {},
+
+        left: false,
     };
 
     topMenuAnchorElement = null;
 
-    handleSidebar = () => {
+    handleSidebar = (open) => {
         this.setState({ sidebarOpen: !this.state.sidebarOpen });
+    };
+
+    closeSidebar = () => {
+        this.setState({ sidebarOpen: false });
+    };
+
+    openSidebar = () => {
+        this.setState({ sidebarOpen: true });
     };
 
     handleAlbumClick = () => {
@@ -180,7 +158,7 @@ class AppSidebar extends React.Component {
                         onClick={this.handleSidebar}
                         className={classes.menuButton}
                     >
-                        {this.state.sidebarOpen ? <MenuOpenTwoToneIcon classes={{root: classes.menuButtonIconClose}} /> : <MenuOpenTwoToneIcon classes={{root: classes.menuButtonIconOpen}} />}
+                        {this.state.sidebarOpen ? <MenuTwoToneIcon classes={{root: classes.menuButtonIconClose}} /> : <MenuTwoToneIcon classes={{root: classes.menuButtonIconOpen}} />}
                     </IconButton>
 
                     <Typography
@@ -227,24 +205,14 @@ class AppSidebar extends React.Component {
                     </div>
                     </Toolbar>
                 </AppBar>
-                <Drawer
-                    variant="permanent"
-                    className={classNames(classes.drawer, {
-                        [classes.sidebarOpen]: this.state.sidebarOpen,
-                        [classes.sidebarClose]: !this.state.sidebarOpen
-                    })}
-                    classes={{
-                        paper: classNames({
-                            [classes.sidebarOpen]: this.state.sidebarOpen,
-                            [classes.sidebarClose]: !this.state.sidebarOpen
-                        })
-                    }}
-                    open={this.state.sidebarOpen}
-                >
-                    <div className={classes.toolbar} />
 
+                <Drawer
+                    anchor={'left'}
+                    open={this.state.sidebarOpen}
+                    onClose={this.handleSidebar}
+                >
                     {menuMain.map((menuItem, index) => (
-                        <DesignAtomListItem key={'menu-main-design-atom-list-item-' + index} to={menuItem.href} text={menuItem.text}>{menuItem.icon}</DesignAtomListItem>
+                        <DesignAtomListItem key={'menu-main-design-atom-list-item-' + index} onClose={this.closeSidebar} to={menuItem.href} text={menuItem.text}>{menuItem.icon}</DesignAtomListItem>
                     ))}
 
                     <Divider />
@@ -261,7 +229,7 @@ class AppSidebar extends React.Component {
                                     <Collapse key={'menu-second-collapse-' + menuSecondIndex} in={this.getSidebarMenuSecondOpen(menuSecondIndex)} timeout="auto" unmountOnExit>
                                         <List component="div" disablePadding>
                                             {menuItem.submenu.map((submenuItem, menuItemIndex) => (
-                                                <DesignAtomListItem key={'menu-second-design-list-item-' + menuSecondIndex + '-' + menuItemIndex} to={submenuItem.href} text={submenuItem.text} className={classes.nested}>{submenuItem.icon}</DesignAtomListItem>
+                                                <DesignAtomListItem key={'menu-second-design-list-item-' + menuSecondIndex + '-' + menuItemIndex} onClose={this.closeSidebar}  to={submenuItem.href} text={submenuItem.text} className={classes.nested}>{submenuItem.icon}</DesignAtomListItem>
                                             ))}
                                         </List>
                                     </Collapse>

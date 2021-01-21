@@ -9,6 +9,7 @@ const DesignAtomListItem = (props) => {
         to,
         text,
         key,
+        onClose,
         className,
         onClick,
         ...rest
@@ -17,8 +18,9 @@ const DesignAtomListItem = (props) => {
     const listItemProps = {
         className: className,
         onClick: (event) => {
-            onClick && onClick(event)
-            history.push(to)
+            onClick && onClick(event);
+            history.push(to);
+            onClose();
         }
     };
 
@@ -38,7 +40,7 @@ DesignAtomListItem.propTypes = {
     to: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     key: PropTypes.string,
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
 }
 
 export default withRouter(DesignAtomListItem)
