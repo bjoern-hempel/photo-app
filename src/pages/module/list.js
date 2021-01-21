@@ -146,10 +146,10 @@ const useStyles = theme => ({
 class ModuleListPage extends React.Component {
     state = {
         width: this.getWidth(),
-        height: this.getWidth(),
-        portraitCols: this.getPortraitCols(),
-        squareCols: this.getSquareCols(),
-        landscapeCols: this.getLandscapeCols(),
+        height: this.getHeight(),
+        portraitCols: this.getPortraitCols(this.getCols()),
+        squareCols: this.getSquareCols(this.getCols()),
+        landscapeCols: this.getLandscapeCols(this.getCols()),
         cols: this.getCols(),
         heightRow: 300,
         defaultValue: {title: null, author: 'Björn Hempel'}
@@ -159,29 +159,38 @@ class ModuleListPage extends React.Component {
      * get cols of current width.
      */
     getCols() {
-
-        return Math.round(this.getWidth() / 100);
+        let cols = Math.ceil(this.getWidth() / 100);
+        return cols > 0 ? cols : 1;
     }
 
     /**
      * Get cols of portrait images.
      */
-    getPortraitCols() {
-        return 2;
+    getPortraitCols(colsAll) {
+        let cols = 2;
+        colsAll = colsAll ? colsAll : this.state.cols;
+
+        return colsAll < cols ?colsAll : cols;
     }
 
     /**
      * Get cols of squared images.
      */
-    getSquareCols() {
-        return 2;
+    getSquareCols(colsAll) {
+        let cols = 3;
+        colsAll = colsAll ? colsAll : this.state.cols;
+
+        return colsAll < cols ?colsAll : cols;
     }
 
     /**
      * Get cols of landsape images.
      */
-    getLandscapeCols() {
-        return 3;
+    getLandscapeCols(colsAll) {
+        let cols = 4;
+        colsAll = colsAll ? colsAll : this.state.cols;
+
+        return colsAll < cols ?colsAll : cols;
     }
 
     /**
@@ -202,10 +211,15 @@ class ModuleListPage extends React.Component {
      * Update dimension function.
      */
     updateDimensions = () => {
+        let cols = this.getCols();
+
         this.setState({
             width: this.getWidth(),
             height: this.getHeight(),
-            cols: this.getCols()
+            portraitCols: this.getPortraitCols(cols),
+            squareCols: this.getSquareCols(cols),
+            landscapeCols: this.getLandscapeCols(cols),
+            cols: cols
         });
     };
 
