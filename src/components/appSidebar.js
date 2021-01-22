@@ -2,7 +2,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PropTypes from "prop-types";
-import classNames from "classnames";
 
 // material ui core
 import { withStyles } from "@material-ui/core/styles";
@@ -11,7 +10,6 @@ import { Drawer, AppBar, Toolbar, Typography, Divider, IconButton, List, ListIte
 
 // import icons (rename to XxxIcon)
 import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
-import MenuOpenTwoToneIcon from '@material-ui/icons/MenuOpenTwoTone';
 import PhotoAlbumTwoToneIcon from '@material-ui/icons/PhotoAlbumTwoTone';
 import PhotoLibraryTwoToneIcon from '@material-ui/icons/PhotoLibraryTwoTone';
 import ViewModuleTwoToneIcon from '@material-ui/icons/ViewModuleTwoTone';
@@ -27,11 +25,9 @@ import MenuTwoToneIcon from '@material-ui/icons/MenuTwoTone';
 import DesignAtomLinkButton from '../design/atom/linkButton';
 import DesignAtomListItem from '../design/atom/listItem';
 
-const drawerWidth = 300;
-
 const menuMain = [
-    {href: '/photo', text: 'Fotos', subtext: '4 Bilder', icon: <PhotoLibraryTwoToneIcon />},
-    {href: '/album', text: 'Foto Alben', subtext: '3 Alben', icon: <PhotoAlbumTwoToneIcon />}
+    {href: '/photo', text: 'Fotos', subtext: '4 Bilder', icon: <PhotoLibraryTwoToneIcon />, buttonIcon: <AddPhotoAlternateTwoToneIcon />, buttonTo: "/photo/new"},
+    {href: '/album', text: 'Foto Alben', subtext: '3 Alben', icon: <PhotoAlbumTwoToneIcon />, buttonIcon: <PlaylistAddTwoToneIcon />, buttonTo: "/album/new"}
 ];
 
 const menuSecond = [
@@ -94,8 +90,6 @@ class AppSidebar extends React.Component {
         albumOpen: true,
 
         sidebarMenuSecondClickOpen: {},
-
-        left: false,
     };
 
     topMenuAnchorElement = null;
@@ -176,9 +170,6 @@ class AppSidebar extends React.Component {
                         </Switch>
                     </Typography>
                     <div>
-                        <DesignAtomLinkButton to="/photo/new"><AddPhotoAlternateTwoToneIcon /></DesignAtomLinkButton>
-                        <DesignAtomLinkButton to="/album/new"><PlaylistAddTwoToneIcon /></DesignAtomLinkButton>
-
                         <IconButton
                             onClick={this.openAppbarMenu}
                             color="inherit"
@@ -212,7 +203,12 @@ class AppSidebar extends React.Component {
                     onClose={this.handleSidebar}
                 >
                     {menuMain.map((menuItem, index) => (
-                        <DesignAtomListItem key={'menu-main-design-atom-list-item-' + index} onClose={this.closeSidebar} to={menuItem.href} text={menuItem.text}>{menuItem.icon}</DesignAtomListItem>
+                        <DesignAtomListItem
+                            key={'menu-main-design-atom-list-item-' + index}
+                            onClose={this.closeSidebar} to={menuItem.href} text={menuItem.text}
+                            buttonIcon={menuItem.buttonIcon || null}
+                            buttonTo={menuItem.buttonTo || null}
+                        >{menuItem.icon}</DesignAtomListItem>
                     ))}
 
                     <Divider />
@@ -229,12 +225,27 @@ class AppSidebar extends React.Component {
                                     <Collapse key={'menu-second-collapse-' + menuSecondIndex} in={this.getSidebarMenuSecondOpen(menuSecondIndex)} timeout="auto" unmountOnExit>
                                         <List component="div" disablePadding>
                                             {menuItem.submenu.map((submenuItem, menuItemIndex) => (
-                                                <DesignAtomListItem key={'menu-second-design-list-item-' + menuSecondIndex + '-' + menuItemIndex} onClose={this.closeSidebar}  to={submenuItem.href} text={submenuItem.text} className={classes.nested}>{submenuItem.icon}</DesignAtomListItem>
+                                                <DesignAtomListItem
+                                                    key={'menu-second-design-list-item-' + menuSecondIndex + '-' + menuItemIndex}
+                                                    onClose={this.closeSidebar}
+                                                    to={submenuItem.href}
+                                                    text={submenuItem.text}
+                                                    className={classes.nested}
+                                                    buttonIcon={submenuItem.buttonIcon || null}
+                                                    buttonTo={submenuItem.buttonTo || null}
+                                                >{submenuItem.icon}</DesignAtomListItem>
                                             ))}
                                         </List>
                                     </Collapse>
                                 </React.Fragment> :
-                                <DesignAtomListItem key={'menu-second-design-atom-list-item-' + menuSecondIndex} to={menuItem.href} text={menuItem.text}>{menuItem.icon}</DesignAtomListItem>
+                                <DesignAtomListItem
+                                    key={'menu-second-design-atom-list-item-' + menuSecondIndex}
+                                    onClose={this.closeSidebar}
+                                    to={menuItem.href}
+                                    text={menuItem.text}
+                                    buttonIcon={menuItem.buttonIcon || null}
+                                    buttonTo={menuItem.buttonTo || null}
+                                >{menuItem.icon}</DesignAtomListItem>
                             }
                         </React.Fragment>
                     ))}

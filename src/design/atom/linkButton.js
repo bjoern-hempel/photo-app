@@ -8,13 +8,17 @@ const DesignAtomLinkButton = (props) => {
         history,
         to,
         onClick,
+        onClose,
+        classes = null,
         ...rest
     } = props;
 
     return (
-        <Button color="inherit" onClick={(event) => {
-            onClick && onClick(event)
-            history.push(to)
+        <Button classes={classes} color="inherit" onClick={(event) => {
+            event.stopPropagation();
+            onClick && onClick(event);
+            onClose && onClose(event);
+            history.push(to);
         }}>{ rest.children }</Button>
     )
 }

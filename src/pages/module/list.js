@@ -159,7 +159,8 @@ class ModuleListPage extends React.Component {
      * get cols of current width.
      */
     getCols() {
-        let cols = Math.ceil(this.getWidth() / 100);
+        let cols = Math.floor(Math.ceil(this.getWidth() / 100) / 2) * 2;
+
         return cols > 0 ? cols : 1;
     }
 
